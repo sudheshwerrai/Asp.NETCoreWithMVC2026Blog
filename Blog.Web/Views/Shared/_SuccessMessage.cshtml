@@ -1,0 +1,16 @@
+﻿@{
+    if (TempData[SD.Success] != null)
+    {
+        <div id="successMessage" class="col-12 text-success">
+            <p>@TempData[SD.Success]</p>
+        </div>
+    }
+}
+<script>
+    setTimeout(function () {
+        var msg = document.getElementById("successMessage");
+        if (msg) {
+            msg.style.display = "none";
+        }
+    }, 3000); // 3 seconds
+</script>
