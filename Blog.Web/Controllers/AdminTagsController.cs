@@ -31,7 +31,7 @@ namespace Blog.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(TagRequestVM tagVM)
+        public async Task<IActionResult> Add(TagRequest tagVM)
         {
             if (ModelState.IsValid)
             {
@@ -55,7 +55,7 @@ namespace Blog.Web.Controllers
             {
                 return NotFound();
             }
-            var tagForView = new TagRequestVM
+            var tagForView = new TagRequest
             {
                 Id = id,
                 Name = tagFromDb.Name,
@@ -66,7 +66,7 @@ namespace Blog.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(TagRequestVM tagVM)
+        public async Task<IActionResult> Edit(TagRequest tagVM)
         {
             if (ModelState.IsValid)
             {

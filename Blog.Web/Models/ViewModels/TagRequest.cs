@@ -1,6 +1,6 @@
 ﻿namespace Blog.Web.Models.ViewModels
 {
-    public class TagRequestVM
+    public class TagRequest
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

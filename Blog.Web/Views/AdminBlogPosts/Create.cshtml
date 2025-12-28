@@ -1,0 +1,109 @@
+﻿@model BlogPostRequest
+
+@{
+    ViewData["Title"] = "Blog Posts";
+}
+
+<nav aria-label="breadcrumb" class="mt-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Create Blog Post</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header d-flex align-items-center justify-content-between bg-dark text-white">
+                <h5 class="mb-0">Create Blog Post</h5>
+                <div>
+                    <a class="btn btn-outline-light btn-sm" asp-controller="AdminBlogPosts" asp-action="Index">Back to list</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <form asp-controller="AdminBlogPosts" asp-action="Create" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label asp-for="BlogPost.Heading" class="form-label"></label>
+                                <input asp-for="BlogPost.Heading" class="form-control" />
+                                <span asp-validation-for="BlogPost.Heading" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="BlogPost.PageTitle" class="form-label"></label>
+                                <input asp-for="BlogPost.PageTitle" class="form-control" />
+                                <span asp-validation-for="BlogPost.PageTitle" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="BlogPost.ShortDescription" class="form-label"></label>
+                                <textarea asp-for="BlogPost.ShortDescription" class="form-control" rows="2"></textarea>
+                                <span asp-validation-for="BlogPost.ShortDescription" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="BlogPost.Content" class="form-label"></label>
+                                <textarea asp-for="BlogPost.Content" class="form-control" rows="3"></textarea>
+                                <span asp-validation-for="BlogPost.Content" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="BlogPost.FeaturedImageUrl" class="form-label"></label>
+                                <input asp-for="BlogPost.FeaturedImageUrl" class="form-control" />
+                                <span asp-validation-for="BlogPost.FeaturedImageUrl" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="BlogPost.UrlHandle" class="form-label"></label>
+                                <input asp-for="BlogPost.UrlHandle" class="form-control" />
+                                <span asp-validation-for="BlogPost.UrlHandle" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label asp-for="BlogPost.PublishedDate" class="form-label"></label>
+                                <input asp-for="BlogPost.PublishedDate" type="datetime-local" class="form-control" />
+                                <span asp-validation-for="BlogPost.PublishedDate" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="BlogPost.Author" class="form-label"></label>
+                                <input asp-for="BlogPost.Author" class="form-control" />
+                                <span asp-validation-for="BlogPost.Author" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Tags</label>
+                                <select asp-for="SelectedTags"
+                                        asp-items="Model.Tags"
+                                        class="form-select"
+                                        multiple="multiple">
+                                </select>
+                            </div>
+
+                            <div class="form-check form-switch mb-3">
+                                <input asp-for="BlogPost.Visible" class="form-check-input" type="checkbox" />
+                                <label asp-for="BlogPost.Visible" class="form-check-label"></label>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Publish</button>
+                                <a class="btn btn-secondary mt-2" asp-controller="AdminBlogPosts" asp-action="Index">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
