@@ -51,14 +51,30 @@
 
                             <div class="mb-3">
                                 <label asp-for="BlogPost.Content" class="form-label"></label>
-                                <textarea asp-for="BlogPost.Content" class="form-control" rows="3"></textarea>
+                                <textarea id="content" asp-for="BlogPost.Content" class="form-control" rows="3"></textarea>
                                 <span asp-validation-for="BlogPost.Content" class="text-danger"></span>
                             </div>
 
                             <div class="mb-3">
+                                <label class="form-label">Featured Image Upload</label>
+                                <input type="file" id="featuredImageUpload" class="form-control" />
+                            </div>
+                            <div class="mb-1">
+                                @if (!string.IsNullOrEmpty(Model.BlogPost.FeaturedImageUrl))
+                                {
+                                    <img src="@Model.BlogPost.FeaturedImageUrl" id="featuredImageShow" style="display:block;height:200px;width:200px;" />
+                                }
+                                else
+                                {
+                                    <img src="" id="featuredImageShow" style="display:none;height:200px;width:200px;" />
+                                }
+
+                            </div>
+
+                            <div class="mb-3">
                                 <label asp-for="BlogPost.FeaturedImageUrl" class="form-label"></label>
-                                <input asp-for="BlogPost.FeaturedImageUrl" class="form-control" />
-                                <span asp-validation-for="BlogPost.FeaturedImageUrl" class="text-danger"></span>
+                                <input asp-for="BlogPost.FeaturedImageUrl" readonly id="featuredImageUrl" class="form-control" />
+                                @* <span asp-validation-for="BlogPost.FeaturedImageUrl" class="text-danger"></span> *@
                             </div>
 
                             <div class="mb-3">
@@ -83,7 +99,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Tags</label>
-                                
+
                                 <select asp-for="SelectedTags"
                                         asp-items="Model.Tags"
                                         class="form-select"
@@ -110,4 +126,6 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <partial name="_FroalaEditor" />
+    <partial name="_CloudinaryImageUpload" />
 }
