@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height:60vh;">
+    <div class="card shadow-sm w-100" style="max-width:720px;">
+        <div class="card-body text-center p-5">
+            <div class="mb-4">
+                <span class="display-4 text-danger" aria-hidden="true">⛔</span>
+            </div>
+
+            <h1 class="h3 mb-3">@ViewData["Title"]</h1>
+            <p class="lead text-muted mb-4">
+                You do not have permission to view this resource or perform this action.
+            </p>
+
+            <div class="mb-4">
+                <p class="small text-muted mb-0">
+                    If you think this is a mistake, you can try signing in with a different account or contact your administrator.
+                </p>
+            </div>           
+        </div>
+    </div>
+</div>

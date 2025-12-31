@@ -1,11 +1,12 @@
 using System.Diagnostics;
 using Blog.Web.Models;
-using Blog.Web.Models.Domain;
 using Blog.Web.Repositories.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers
 {
+    [Authorize(Roles = "User")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

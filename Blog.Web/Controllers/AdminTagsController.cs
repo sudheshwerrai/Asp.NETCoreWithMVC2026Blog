@@ -4,11 +4,13 @@ using Blog.Web.Models.ViewModels;
 using Blog.Web.Repositories;
 using Blog.Web.Repositories.IRepository;
 using Blog.Web.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminTagsController : Controller
     {
         private readonly ITagRepository _tagRepository = null;

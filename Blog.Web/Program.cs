@@ -1,6 +1,7 @@
 using Blog.Web.Data;
 using Blog.Web.Repositories;
 using Blog.Web.Repositories.IRepository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Web
@@ -13,7 +14,19 @@ namespace Blog.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<BlogDbContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("BlogDbConnection")));
+
+            builder.Services.AddDbContext<BlogDbContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("BlogDbConnection")));            
+            builder.Services.AddDbContext<AuthDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BlogAuthDbConnection")));
+
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>();
+
+            //builder.Services.AddAuthorization(options => {
+            //    options.AddPolicy("User", policy =>
+            //    {
+            //        policy.RequireRole("User");
+            //    });
+            //});
+
             builder.Services.AddScoped<ITagRepository, TagRepository>();
             builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
             builder.Services.AddScoped<ICloudinaryImageRepository, CloudinaryImageRepository>();
@@ -32,6 +45,7 @@ namespace Blog.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
