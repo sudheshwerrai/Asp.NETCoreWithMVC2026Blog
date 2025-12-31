@@ -39,7 +39,7 @@
 
                             <div class="mb-3">
                                 <label asp-for="BlogPost.PageTitle" class="form-label"></label>
-                                <input asp-for="BlogPost.PageTitle" class="form-control" />
+                                <input asp-for="BlogPost.PageTitle" id="title" onblur="generateSlug()" class="form-control" />
                                 <span asp-validation-for="BlogPost.PageTitle" class="text-danger"></span>
                             </div>
 
@@ -79,7 +79,7 @@
 
                             <div class="mb-3">
                                 <label asp-for="BlogPost.UrlHandle" class="form-label"></label>
-                                <input asp-for="BlogPost.UrlHandle" class="form-control" />
+                                <input asp-for="BlogPost.UrlHandle" id="slug" readonly class="form-control" />
                                 <span asp-validation-for="BlogPost.UrlHandle" class="text-danger"></span>
                             </div>
                         </div>
@@ -128,4 +128,5 @@
     <partial name="_ValidationScriptsPartial" />
     <partial name="_FroalaEditor" />
     <partial name="_CloudinaryImageUpload" />
+    <partial name="_GenerateSlung" />
 }
