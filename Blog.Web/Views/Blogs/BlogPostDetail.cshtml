@@ -1,4 +1,8 @@
-﻿@model BlogPost
+﻿@model BlogDetailsViewModel
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> signInManager
+@inject UserManager<IdentityUser> userManager
 
 @{
     ViewData["Title"] = Model?.Heading ?? "Blog Post";
@@ -37,6 +41,16 @@
             <h1 class="h3 mb-2">@Model.Heading</h1>
             <div class="text-muted mb-3">@Model.PublishedDate.ToString("yyyy-MM-dd") &middot; @Model.Author</div>
 
+            <div class="text-muted mb-3">
+                @if (signInManager.IsSignedIn(User) && User.IsInRole("User"))
+                {                    
+                    <a id="btnLike" style="cursor:pointer">
+                        <i id="icon_like" class="bi bi-hand-thumbs-up"></i>
+                    </a>                  
+                }
+                <span id="totalLikes">  @Model.TotalLikes  </span> likes
+            </div>
+
             <p class="lead">@Model.ShortDescription</p>
 
             <div class="content">
@@ -45,12 +59,68 @@
         </article>
 
         <div class="d-flex justify-content-between align-items-center mb-5">
-            <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">&larr; Back to list</a>
-            @* <div>
-                <a class="btn btn-outline-primary me-2" href="#">Share</a>
-                <a class="btn btn-primary" href="#">Subscribe</a>
-            </div> *@
+            <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">&larr; Back to list</a>           
         </div>
 
     </div>
 </div>
+@section Scripts {
+    <script>
+
+            document.addEventListener("DOMContentLoaded", function () {
+            isUserPostLiked();
+        });
+
+          const btnLikeElement=document.getElementById('btnLike');
+           const iconElement=document.getElementById('icon_like');
+           const totalLikesElement=document.getElementById('totalLikes');
+
+                async function isUserPostLiked() {
+            const response = await fetch('/api/BlogPostLike/@userManager.GetUserId(User)/@Model.Id', {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "*/*"
+                }
+            });
+
+            const res = await response.json();
+
+            if (res === true) {
+                btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>';
+                btnLikeElement.removeEventListener("click", addLikeForBlog);
+            }
+        }
+
+        async function getTotalLikes(){
+               fetch('/api/BlogPostLike/@Model.Id',{
+                   method:'GET',
+                     headers:{
+                       "Content-Type":'application/json',
+                       'Accept':'*/*'
+                   }
+               }).then(data=>data.json())
+               .then(result=>totalLikesElement.innerHTML=result);
+        }
+
+         async function addLikeForBlog()
+          {
+              fetch('/api/BlogPostLike/',{
+                  method:'POST',
+                  headers:{
+                      "Content-Type":'application/json',
+                      'Accept':'*/*'
+                  },
+                   body:JSON.stringify({blogPostId:'@Model.Id',userId:'@userManager.GetUserId(User)'})
+              }).then(()=>{
+                   btnLikeElement.innerHTML='<i class="bi bi-hand-thumbs-up-fill"></i>';
+                   btnLikeElement.removeEventListener("click",addLikeForBlog);
+                   getTotalLikes();
+              })
+
+
+          }
+
+          btnLikeElement.addEventListener("click",addLikeForBlog);
+    </script>
+}

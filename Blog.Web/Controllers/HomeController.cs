@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers
-{
-    [Authorize(Roles = "User")]
+{    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -20,7 +19,7 @@ namespace Blog.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var blogPosts = await _blogPostRepository.GetAllAsync();
+            var blogPosts = await _blogPostRepository.GetAllAsync(false);
             return View(blogPosts);
         }       
 

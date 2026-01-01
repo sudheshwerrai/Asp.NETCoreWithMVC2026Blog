@@ -16,31 +16,33 @@ namespace Blog.Web.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<BlogPost>> GetAllAsync()
+        public async Task<IEnumerable<BlogPost>> GetAllAsync(bool visibleAll = true)
         {
-          return await _dbContext.BlogPosts.Include(b=>b.Tags).ToListAsync();
+            if (visibleAll)
+                return await _dbContext.BlogPosts.Include(b => b.Tags).ToListAsync();
+            return await _dbContext.BlogPosts.Include(b => b.Tags).Where(b => b.Visible).ToListAsync();
         }
 
         public async Task<BlogPost> GetAsync(Guid id)
         {
-           return await _dbContext.BlogPosts.Include(bp=>bp.Tags).FirstOrDefaultAsync(bp => bp.Id == id);
+            return await _dbContext.BlogPosts.Include(bp => bp.Tags).FirstOrDefaultAsync(bp => bp.Id == id);
         }
 
         public async Task<BlogPost> GetBlogByUrlHandler(string urlHandler)
         {
             return await _dbContext.BlogPosts.Include(bp => bp.Tags).FirstOrDefaultAsync(bp => bp.UrlHandle == urlHandler);
         }
-       
+
         public async Task AddAsync(BlogPost blogPost)
         {
-           await _dbContext.BlogPosts.AddAsync(blogPost);
-           await _dbContext.SaveChangesAsync();
+            await _dbContext.BlogPosts.AddAsync(blogPost);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(BlogPost blogPost)
-        {                         
+        {
             var existingBlogPost = _dbContext.BlogPosts.Include(bp => bp.Tags).FirstOrDefault(bp => bp.Id == blogPost.Id);
-            existingBlogPost.Id=blogPost.Id;
+            existingBlogPost.Id = blogPost.Id;
             existingBlogPost.Heading = blogPost.Heading;
             existingBlogPost.PageTitle = blogPost.PageTitle;
             existingBlogPost.Content = blogPost.Content;
@@ -50,7 +52,7 @@ namespace Blog.Web.Repositories
             existingBlogPost.PublishedDate = blogPost.PublishedDate;
             existingBlogPost.Author = blogPost.Author;
             existingBlogPost.Visible = blogPost.Visible;
-            existingBlogPost.Tags= blogPost.Tags;
+            existingBlogPost.Tags = blogPost.Tags;
             await _dbContext.SaveChangesAsync();
         }
 
@@ -62,6 +64,6 @@ namespace Blog.Web.Repositories
                 _dbContext.BlogPosts.Remove(blogFromDb);
                 await _dbContext.SaveChangesAsync();
             }
-        }     
+        }
     }
 }

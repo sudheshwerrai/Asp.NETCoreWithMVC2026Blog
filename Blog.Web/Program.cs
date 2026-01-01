@@ -30,6 +30,8 @@ namespace Blog.Web
             builder.Services.AddScoped<ITagRepository, TagRepository>();
             builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
             builder.Services.AddScoped<ICloudinaryImageRepository, CloudinaryImageRepository>();
+            builder.Services.AddScoped<IBlogPostLikeRepository,BlogPostLikeRepository>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
