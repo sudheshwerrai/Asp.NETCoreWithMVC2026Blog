@@ -56,6 +56,48 @@
             <div class="content">
                 @Html.Raw(Model.Content)
             </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5>Comments</h5>
+                    @if (signInManager.IsSignedIn(User))
+                    {
+
+                        <form asp-action="SaveBlogComment" method="post">
+                            <div class="mb-3">
+                                <label class="form-label">Comment Description</label>
+                                <input type="text" asp-for="CommentDescription" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-dark">Submit</button>
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="UrlHandle" />
+                            </div>
+                        </form>
+                    }
+                </div>
+                <div class="card-body">
+                    @if (Model.Comments != null && Model.Comments.Any())
+                    {
+                        foreach (var comment in Model.Comments)
+                        {
+                            <div class="border-bottom mb-3 pb-2">
+                                <div class="d-flex justify-content-between">
+                                    <strong>@comment.UserName</strong>
+                                    <small class="text-muted">
+                                        @comment.DateAdded.ToString("dd MMM yyyy hh:mm tt")
+                                    </small>
+                                </div>
+                                <p class="mb-0">@comment.Description</p>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">No comments yet.</p>
+                    }
+                </div>
+            </div>
         </article>
 
         <div class="d-flex justify-content-between align-items-center mb-5">

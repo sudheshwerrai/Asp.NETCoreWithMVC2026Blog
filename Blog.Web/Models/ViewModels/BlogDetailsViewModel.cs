@@ -26,6 +26,10 @@ namespace Blog.Web.Models.ViewModels
 
         public int TotalLikes { get; set; }
 
+        public string CommentDescription { get; set; }
+
+        public IEnumerable<BlogCommentViewModel> Comments { get; set; }
+
         public ICollection<Tag> Tags { get; set; }
     }
 }

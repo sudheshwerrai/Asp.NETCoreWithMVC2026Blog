@@ -31,6 +31,7 @@ namespace Blog.Web
             builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
             builder.Services.AddScoped<ICloudinaryImageRepository, CloudinaryImageRepository>();
             builder.Services.AddScoped<IBlogPostLikeRepository,BlogPostLikeRepository>();
+            builder.Services.AddScoped<IBlogPostCommentRepository,BlogPostCommentRepository>();
 
             var app = builder.Build();
 
