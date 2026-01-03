@@ -10,8 +10,8 @@ namespace Blog.Web.Controllers
         private readonly SignInManager<IdentityUser> _signINManager = null;
         public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
-            _userManager=userManager;
-            _signINManager=signInManager;
+            _userManager = userManager;
+            _signINManager = signInManager;
         }
 
         [HttpGet]
@@ -27,10 +27,10 @@ namespace Blog.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
-           var signInResult= await _signINManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, false, false);
+            var signInResult = await _signINManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, false, false);
             if (signInResult.Succeeded)
             {
-                if(!string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl))
+                if (!string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl))
                 {
                     return Redirect(loginViewModel.ReturnUrl);
                 }
@@ -52,14 +52,26 @@ namespace Blog.Web.Controllers
             {
                 UserName = registerViewModel.UserName,
                 Email = registerViewModel.Email,
-                
+
             };
-          
-           var identityResult= await _userManager.CreateAsync(identityUser, registerViewModel.Password);
-            if (identityResult.Succeeded) 
+
+            var identityResult = await _userManager.CreateAsync(identityUser, registerViewModel.Password);
+            if (identityResult.Succeeded)
             {
-               var roleIdentityResult= await _userManager.AddToRoleAsync(identityUser, "User");
-                if (roleIdentityResult.Succeeded) 
+                //Part 1
+                //var roleIdentityResult= await _userManager.AddToRoleAsync(identityUser, "User");
+                // if (roleIdentityResult.Succeeded) 
+                // {
+                //     return RedirectToAction(nameof(Register));
+                // }
+
+                //Part 2
+                IdentityResult roleIdentityResult = null;
+                if (registerViewModel.IsAdmin)
+                    roleIdentityResult = await _userManager.AddToRoleAsync(identityUser, "Admin");
+                else
+                    roleIdentityResult = await _userManager.AddToRoleAsync(identityUser, "User");
+                if (roleIdentityResult.Succeeded)
                 {
                     return RedirectToAction(nameof(Register));
                 }
@@ -71,7 +83,7 @@ namespace Blog.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signINManager.SignOutAsync();
-            return RedirectToAction("Login","Account");
+            return RedirectToAction("Login", "Account");
         }
 
         [HttpGet]
